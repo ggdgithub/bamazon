@@ -16,7 +16,8 @@ CREATE TABLE products
   (10,2) NOT NULL,
   stock_quantity INT
   (20) NOT NULL,
-  PRIMARY KEY item_id
+  PRIMARY KEY
+  (item_id)
 );
 
   INSERT INTO products
