@@ -1,19 +1,14 @@
--- Drops the animals_db if it exists currently --
-DROP DATABASE IF EXISTS animals_db;
--- Creates the "animals_db" database --
-CREATE DATABASE animals_db;
+DROP DATABASE IF EXISTS products;
 
--- Makes it so all of the following code will affect animals_db --
-USE animals_db;
+CREATE DATABASE products;
 
--- Creates the table "people" within animals_db --
-CREATE TABLE people (
-  -- Makes a string column called "name" which cannot contain null --
-  name VARCHAR(30) NOT NULL,
-  -- Makes a boolean column called "has_pet" which cannot contain null --
-  has_pet BOOLEAN NOT NULL,
-  -- Makes a sting column called "pet_name" --
-  pet_name VARCHAR(30),
-  -- Makes an numeric column called "pet_age" --
-  pet_age INTEGER(10)
+USE products;
+
+CREATE TABLE products
+(
+  item_id INT(5) NOT NULL,
+  product_name VARCHAR(100) NOT NULL,
+  department_name VARCHAR(100) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  stock_quantity INT(20) NOT NULL,
 );
