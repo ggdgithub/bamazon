@@ -15,12 +15,13 @@ connection.connect(function (err) {
     console.log("connected as id" + connection.threadId);
 });
 
-var seeThroughWindow = function () {
+// The Vending Machine window
+var window = function () {
     var query = "Select * FROM products";
     connection.query(query, function (err, res) {
         if (err) throw err;
         var displayTable = new Table({
-            head: ["Item ID", "Product Name", "Catergory", "Price", "Quantity"],
+            head: ["Item Number", "Product Name", "Catergory", "Price", "Quantity"],
             colWidths: [20, 20, 20, 20, 20]
         });
         for (var i = 0; i < res.length; i++) {
@@ -33,12 +34,13 @@ var seeThroughWindow = function () {
     });
 }
 
+// Prompt to buy items
 function buyPrompt() {
     inquirer.prompt([
         {
             name: "ID",
             type: "input",
-            message: "Please enter the Item ID of the item you want to purchase.",
+            message: "Please enter the Item Number of the item you want to purchase.",
             filter: Number
         },
         {
@@ -51,24 +53,25 @@ function buyPrompt() {
     ]).then(function (answers) {
         var enteredQuantity = answers.Quantity;
         var IDrequested = answers.ID;
-        purchaseOrder(IDrequested, enteredQuantity);
+        vending(IDrequested, enteredQuantity);
     });
 };
 
-function purchaseOrder(ID, amount) {
+function vending(ID, amount) {
     connection.query('Select * FROM products WHERE item_id = ' + ID, function (err, res) {
         if (err) { console.log(err) };
         if (amount <= res[0].stock_quantity) {
             var totalCost = res[0].price * amount;
+
             console.log("Vending...");
             console.log("Your total cost for " + amount + " " + res[0].product_name + " is " + totalCost);
 
-            connection.query("UPDATE products SET stock_quantity = stock_quantity - " + amount + "WHERE item_id = " + ID);
+            connection.query("UPDATE products SET stock_quantity = stock_quantity-" + amount + " WHERE item_id = " + ID);
         } else {
             console.log("Sorry, we do not have enough " + res[0].product_name + " in the vending machine. Please try again.");
         };
-        seeThroughWindow();
+        window();
     });
 };
 
-seeThroughWindow();
+window();
